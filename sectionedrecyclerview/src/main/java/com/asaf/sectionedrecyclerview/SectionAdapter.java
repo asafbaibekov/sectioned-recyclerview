@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 public abstract class SectionAdapter extends RecyclerView.Adapter {
 
-    private Context context;
+    protected Context context;
 
     protected SectionAdapter(Context context) {
         this.context = context;
