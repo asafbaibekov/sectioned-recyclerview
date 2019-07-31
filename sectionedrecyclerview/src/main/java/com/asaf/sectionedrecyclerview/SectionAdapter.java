@@ -3,6 +3,7 @@ package com.asaf.sectionedrecyclerview;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,20 @@ public abstract class SectionAdapter extends RecyclerView.Adapter implements OnI
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int i) {
+                    return getItemTypeFromPosition(i) == IndexPath.ROW_ITEM_TYPE ? 1 : gridLayoutManager.getSpanCount();
+                }
+            });
+        }
     }
 
     private int getItemTypeFromPosition(int position) {
