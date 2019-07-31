@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class SectionAdapter extends RecyclerView.Adapter {
+public abstract class SectionAdapter extends RecyclerView.Adapter implements OnItemSelectListener, OnItemHighlightListener {
 
     protected Context context;
 
@@ -106,4 +106,16 @@ public abstract class SectionAdapter extends RecyclerView.Adapter {
     protected void onBindSectionViewHolder(RecyclerView.ViewHolder holder, int section) {}
     protected abstract void onBindItemViewHolder(RecyclerView.ViewHolder holder, IndexPath indexPath);
     protected void onBindFooterViewHolder(RecyclerView.ViewHolder holder, int footer) {}
+
+    @Override
+    public void onSelectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {}
+
+    @Override
+    public void onDeselectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {}
+
+    @Override
+    public void onHighlightViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {}
+
+    @Override
+    public void onUnhighlightViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {}
 }
