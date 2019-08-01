@@ -1,6 +1,7 @@
 package com.asaf.sectionedrecyclerview;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class IndexPath {
     static final int SECTION_ITEM_TYPE = 0;
@@ -30,5 +31,11 @@ public class IndexPath {
                 "section=" + section +
                 ", row=" + row +
                 "}";
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof IndexPath)) return false;
+        return this.getSection() == ((IndexPath) obj).getSection() && this.getRow() == ((IndexPath) obj).getRow();
     }
 }
