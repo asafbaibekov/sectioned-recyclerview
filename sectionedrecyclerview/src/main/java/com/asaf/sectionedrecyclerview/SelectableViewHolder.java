@@ -51,7 +51,7 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     public void setOnItemHighlightListener(OnItemHighlightListener onItemHighlightListener, IndexPath indexPath) {
-        this.onItemHighlightListener= onItemHighlightListener;
+        this.onItemHighlightListener = onItemHighlightListener;
         this.indexPath = indexPath;
         if (onItemHighlightListener == null || indexPath == null) return;
         this.itemView.setOnTouchListener(this);
