@@ -2,29 +2,17 @@ package com.asaf.sectionedrecyclerview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class SectionAdapter extends RecyclerView.Adapter implements OnItemSelectListener, OnItemHighlightListener {
+public abstract class SectionAdapter extends RecyclerView.Adapter {
 
     protected Context context;
 
-    @Nullable
-    private List<IndexPath> indexPathsForSelectedItems;
-
     protected SectionAdapter(Context context) {
         this.context = context;
-    }
-
-    @Nullable
-    public List<IndexPath> getIndexPathsForSelectedItems() {
-        return indexPathsForSelectedItems;
     }
 
     @NonNull
@@ -133,23 +121,4 @@ public abstract class SectionAdapter extends RecyclerView.Adapter implements OnI
     protected void onBindSectionViewHolder(RecyclerView.ViewHolder holder, int section) {}
     protected abstract void onBindItemViewHolder(RecyclerView.ViewHolder holder, IndexPath indexPath);
     protected void onBindFooterViewHolder(RecyclerView.ViewHolder holder, int footer) {}
-
-    @Override
-    public void onSelectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
-        if (indexPathsForSelectedItems == null) indexPathsForSelectedItems = new ArrayList<>();
-        indexPathsForSelectedItems.add(indexPath);
-    }
-
-    @Override
-    public void onDeselectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
-        if (indexPathsForSelectedItems == null) return;
-        indexPathsForSelectedItems.remove(indexPath);
-        if (indexPathsForSelectedItems.isEmpty()) indexPathsForSelectedItems = null;
-    }
-
-    @Override
-    public void onHighlightViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {}
-
-    @Override
-    public void onUnhighlightViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {}
 }
