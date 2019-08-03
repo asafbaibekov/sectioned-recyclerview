@@ -33,6 +33,14 @@ public class IndexPath {
                 "}";
     }
 
+    public boolean isSectionEqual(int section) {
+        return this.getSection() == section;
+    }
+
+    public boolean isRowEqual(int row) {
+        return this.getRow() == row;
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof IndexPath)) return false;
