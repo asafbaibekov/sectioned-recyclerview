@@ -81,7 +81,7 @@ public class MyAdapter extends SectionAdapter {
     @Override
     public void onDeselectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
         super.onDeselectViewHolder(viewHolder, indexPath);
-        Log.d(TAG, "onSelectViewHolder: " + getIndexPathsForSelectedItems());
+        Log.d(TAG, "onDeselectViewHolder: " + getIndexPathsForSelectedItems());
     }
 
     @Override
