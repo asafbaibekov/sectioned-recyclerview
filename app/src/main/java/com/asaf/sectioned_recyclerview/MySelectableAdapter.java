@@ -1,7 +1,9 @@
 package com.asaf.sectioned_recyclerview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +12,14 @@ import com.asaf.sectioned_recyclerview.view_holders.FooterViewHolder;
 import com.asaf.sectioned_recyclerview.view_holders.HeaderViewHolder;
 import com.asaf.sectioned_recyclerview.view_holders.ItemViewHolder;
 import com.asaf.sectionedrecyclerview.IndexPath;
-import com.asaf.sectionedrecyclerview.SectionAdapter;
+import com.asaf.sectionedrecyclerview.SelectableAdapter;
+import com.asaf.sectionedrecyclerview.SelectableViewHolder;
 
-public class MyAdapter extends SectionAdapter {
+public class MySelectableAdapter extends SelectableAdapter {
 
-    private final String TAG = "MyAdapter";
+    private final String TAG = "MySelectableAdapter";
 
-    MyAdapter(Context context) {
+    MySelectableAdapter(Context context) {
         super(context);
     }
 
@@ -56,6 +59,7 @@ public class MyAdapter extends SectionAdapter {
 
     @Override
     protected void onBindItemViewHolder(RecyclerView.ViewHolder holder, IndexPath indexPath) {
+        super.onBindItemViewHolder(holder, indexPath);
         if (holder instanceof ItemViewHolder)
             ((ItemViewHolder) holder).setTitle("Item " + indexPath.getRow());
     }
@@ -64,5 +68,27 @@ public class MyAdapter extends SectionAdapter {
     protected void onBindFooterViewHolder(RecyclerView.ViewHolder holder, int footer) {
         if (holder instanceof FooterViewHolder)
             ((FooterViewHolder) holder).setTitle("footer " + footer);
+    }
+
+    @Override
+    protected void onSelectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
+        viewHolder.itemView.setBackgroundColor(Color.parseColor("#ff0000"));
+        Log.d(TAG, "selectViewHolder: " + getIndexPathsForSelectedItems());
+    }
+
+    @Override
+    protected void onDeselectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
+        viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+        Log.d(TAG, "deselectViewHolder: " + getIndexPathsForSelectedItems());
+    }
+
+    @Override
+    protected void onHighlightViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
+        viewHolder.itemView.animate().setDuration(50).scaleX(0.975f).scaleY(0.9f);
+    }
+
+    @Override
+    protected void onUnhighlightViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
+        viewHolder.itemView.animate().setDuration(50).scaleX(1).scaleY(1);
     }
 }
