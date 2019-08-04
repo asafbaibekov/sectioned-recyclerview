@@ -36,6 +36,7 @@ public abstract class SelectableAdapter extends SectionAdapter {
     protected void onBindItemViewHolder(RecyclerView.ViewHolder holder, IndexPath indexPath) {
         if (!(holder instanceof SelectableViewHolder)) return;
         SelectableViewHolder selectableViewHolder = (SelectableViewHolder) holder;
+        selectableViewHolder.setSelectableAdapter(this, indexPath);
         if (getIndexPathsForSelectedItems() != null)
             selectableViewHolder.setSelected(getIndexPathsForSelectedItems().contains(indexPath));
     }

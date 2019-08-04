@@ -13,6 +13,9 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
     private boolean selectable = true;
 
     @Nullable
+    private SelectableAdapter selectableAdapter;
+
+    @Nullable
     private OnItemSelectListener onItemSelectListener;
     @Nullable
     private OnItemHighlightListener onItemHighlightListener;
@@ -30,7 +33,12 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
 
     void setSelected(boolean selected) {
         isSelected = selected;
-        if (onItemSelectListener == null || indexPath == null) return;
+        if (indexPath == null) return;
+        if (selectableAdapter != null) {
+            if (selected) selectableAdapter.selectViewHolder(this, indexPath);
+            else selectableAdapter.deselectViewHolder(this, indexPath);
+        }
+        if (onItemSelectListener == null) return;
         if (selected) onItemSelectListener.onSelectViewHolder(this, indexPath);
         else onItemSelectListener.onDeselectViewHolder(this, indexPath);
     }
@@ -43,14 +51,21 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
         this.selectable = selectable;
     }
 
-    void setOnItemSelectListener(OnItemSelectListener onItemSelectListener, IndexPath indexPath) {
+    void setSelectableAdapter(SelectableAdapter selectableAdapter, IndexPath indexPath) {
+        this.selectableAdapter = selectableAdapter;
+        this.indexPath = indexPath;
+        if (selectableAdapter == null || indexPath == null) return;
+        this.itemView.setOnTouchListener(this);
+    }
+
+    public void setOnItemSelectListener(OnItemSelectListener onItemSelectListener, IndexPath indexPath) {
         this.onItemSelectListener = onItemSelectListener;
         this.indexPath = indexPath;
         if (onItemSelectListener == null || indexPath == null) return;
         this.itemView.setOnTouchListener(this);
     }
 
-    void setOnItemHighlightListener(OnItemHighlightListener onItemHighlightListener, IndexPath indexPath) {
+    public void setOnItemHighlightListener(OnItemHighlightListener onItemHighlightListener, IndexPath indexPath) {
         this.onItemHighlightListener = onItemHighlightListener;
         this.indexPath = indexPath;
         if (onItemHighlightListener == null || indexPath == null) return;
@@ -60,16 +75,23 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (indexPath == null || !selectable) return false;
-        if (onItemSelectListener != null && motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             view.performClick();
             this.setSelected(!this.isSelected);
         }
-        if (onItemHighlightListener != null)
+        if (selectableAdapter != null) {
             switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN: this.onItemHighlightListener.onHighlightViewHolder(this, indexPath); return true;
+                case MotionEvent.ACTION_DOWN: this.selectableAdapter.highlightViewHolder(this, indexPath); return true;
                 case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL: this.onItemHighlightListener.onUnhighlightViewHolder(this, indexPath); return true;
+                case MotionEvent.ACTION_CANCEL: this.selectableAdapter.unhighlightViewHolder(this, indexPath); return true;
             }
+        }
+        if (onItemHighlightListener == null) return false;
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN: this.onItemHighlightListener.onHighlightViewHolder(this, indexPath); return true;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL: this.onItemHighlightListener.onUnhighlightViewHolder(this, indexPath); return true;
+        }
         return false;
     }
 }
