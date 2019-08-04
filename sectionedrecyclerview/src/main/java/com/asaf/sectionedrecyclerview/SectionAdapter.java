@@ -108,6 +108,25 @@ public abstract class SectionAdapter extends RecyclerView.Adapter {
         throw new IndexOutOfBoundsException();
     }
 
+    private int getPositionFromIndexPath(IndexPath indexPath) {
+        int counter = 0;
+        if (indexPath.getSection() >= numbersOfSections()) throw new IndexOutOfBoundsException();
+        for (int i = 0; i < numbersOfSections(); i++) {
+            int numberOfRowsInSection = numberOfRowsInSection(i);
+            if (!indexPath.isSectionEqual(i)) {
+                counter += numberOfRowsInSection + 2;
+                continue;
+            }
+            if (indexPath.getRow() >= numberOfRowsInSection) throw new IndexOutOfBoundsException();
+            for (int j = 0; j < numberOfRowsInSection; j++) {
+                counter++;
+                if (indexPath.isRowEqual(j))
+                    return counter;
+            }
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
     protected abstract int numbersOfSections();
     protected abstract int numberOfRowsInSection(int section);
 
