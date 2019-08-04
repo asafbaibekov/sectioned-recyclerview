@@ -16,19 +16,19 @@ public abstract class SelectableAdapter extends SectionAdapter {
     @Nullable
     private CopyOnWriteArrayList<IndexPath> indexPathsForSelectedItems;
 
-    private boolean singleSelection;
+    private SelectionMode selectionMode;
 
     protected SelectableAdapter(Context context) {
         super(context);
-        this.singleSelection = false;
+        this.selectionMode = SelectionMode.MULTI;
     }
 
-    public void setSingleSelection(boolean singleSelection) {
-        this.singleSelection = singleSelection;
+    public void setSelectionMode(SelectionMode selectionMode) {
+        this.selectionMode = selectionMode;
     }
 
-    public boolean isSingleSelection() {
-        return singleSelection;
+    public SelectionMode getSelectionMode() {
+        return selectionMode;
     }
 
     @Nullable
@@ -54,13 +54,24 @@ public abstract class SelectableAdapter extends SectionAdapter {
         if (indexPathsForSelectedItems == null) indexPathsForSelectedItems = new CopyOnWriteArrayList<>();
         indexPathsForSelectedItems.add(indexPath);
         this.onSelectViewHolder(viewHolder, indexPath);
-        if (!singleSelection) return;
         if (indexPathsForSelectedItems == null) return;
-        for (IndexPath indexPath1 : indexPathsForSelectedItems) {
-            if (!indexPath.equals(indexPath1)) {
-                indexPathsForSelectedItems.remove(indexPath1);
-                notifyItemChanged(indexPath1);
-            }
+        switch (selectionMode) {
+            case SINGLE:
+                for (IndexPath indexPath1 : indexPathsForSelectedItems) {
+                    if (!indexPath.equals(indexPath1)) {
+                        indexPathsForSelectedItems.remove(indexPath1);
+                        notifyItemChanged(indexPath1);
+                    }
+                }
+                break;
+            case SINGLE_SECTION:
+                for (IndexPath indexPath1 : indexPathsForSelectedItems) {
+                    if (indexPath.isSectionEqual(indexPath1) && !indexPath.isRowEqual(indexPath1)) {
+                        indexPathsForSelectedItems.remove(indexPath1);
+                        notifyItemChanged(indexPath1);
+                    }
+                }
+                break;
         }
     }
 
