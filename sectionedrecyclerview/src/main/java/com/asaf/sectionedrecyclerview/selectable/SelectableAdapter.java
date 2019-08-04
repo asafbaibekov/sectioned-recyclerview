@@ -1,8 +1,11 @@
-package com.asaf.sectionedrecyclerview;
+package com.asaf.sectionedrecyclerview.selectable;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+
+import com.asaf.sectionedrecyclerview.IndexPath;
+import com.asaf.sectionedrecyclerview.SectionAdapter;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

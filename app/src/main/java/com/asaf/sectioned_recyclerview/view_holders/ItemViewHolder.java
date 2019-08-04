@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
-import com.asaf.sectionedrecyclerview.SelectableViewHolder;
+import com.asaf.sectionedrecyclerview.selectable.SelectableViewHolder;
 
 public class ItemViewHolder extends SelectableViewHolder {
     private TextView textView;

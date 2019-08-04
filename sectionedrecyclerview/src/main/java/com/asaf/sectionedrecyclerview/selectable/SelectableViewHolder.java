@@ -1,10 +1,12 @@
-package com.asaf.sectionedrecyclerview;
+package com.asaf.sectionedrecyclerview.selectable;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.asaf.sectionedrecyclerview.IndexPath;
 
 public class SelectableViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener {
 

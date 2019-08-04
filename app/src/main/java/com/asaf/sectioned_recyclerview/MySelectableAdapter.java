@@ -12,8 +12,8 @@ import com.asaf.sectioned_recyclerview.view_holders.FooterViewHolder;
 import com.asaf.sectioned_recyclerview.view_holders.HeaderViewHolder;
 import com.asaf.sectioned_recyclerview.view_holders.ItemViewHolder;
 import com.asaf.sectionedrecyclerview.IndexPath;
-import com.asaf.sectionedrecyclerview.SelectableAdapter;
-import com.asaf.sectionedrecyclerview.SelectableViewHolder;
+import com.asaf.sectionedrecyclerview.selectable.SelectableAdapter;
+import com.asaf.sectionedrecyclerview.selectable.SelectableViewHolder;
 
 public class MySelectableAdapter extends SelectableAdapter {
 

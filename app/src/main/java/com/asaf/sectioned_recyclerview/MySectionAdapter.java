@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import com.asaf.sectioned_recyclerview.view_holders.ItemViewHolder;
 import com.asaf.sectionedrecyclerview.IndexPath;
-import com.asaf.sectionedrecyclerview.OnItemHighlightListener;
+import com.asaf.sectionedrecyclerview.selectable.OnItemHighlightListener;
 import com.asaf.sectionedrecyclerview.SectionAdapter;
-import com.asaf.sectionedrecyclerview.SelectableViewHolder;
+import com.asaf.sectionedrecyclerview.selectable.SelectableViewHolder;
 
 public class MySectionAdapter extends SectionAdapter implements OnItemHighlightListener {
 
