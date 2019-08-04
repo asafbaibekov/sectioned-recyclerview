@@ -108,6 +108,10 @@ public abstract class SectionAdapter extends RecyclerView.Adapter {
         throw new IndexOutOfBoundsException();
     }
 
+    public void notifyItemChanged(IndexPath indexPath) {
+        notifyItemChanged(getPositionFromIndexPath(indexPath));
+    }
+
     private int getPositionFromIndexPath(IndexPath indexPath) {
         int counter = 0;
         if (indexPath.getSection() >= numbersOfSections()) throw new IndexOutOfBoundsException();
