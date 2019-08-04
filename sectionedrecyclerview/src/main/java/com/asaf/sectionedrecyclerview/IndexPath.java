@@ -41,6 +41,14 @@ public class IndexPath {
         return this.getRow() == row;
     }
 
+    public boolean isSectionEqual(IndexPath indexPath) {
+        return isSectionEqual(indexPath.getSection());
+    }
+
+    public boolean isRowEqual(IndexPath indexPath) {
+        return isRowEqual(indexPath.getRow());
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof IndexPath)) return false;
