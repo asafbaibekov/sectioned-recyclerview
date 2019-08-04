@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import com.asaf.sectionedrecyclerview.IndexPath;
 import com.asaf.sectionedrecyclerview.SectionAdapter;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -32,7 +33,7 @@ public abstract class SelectableAdapter extends SectionAdapter {
 
     @Nullable
     public List<IndexPath> getIndexPathsForSelectedItems() {
-        return indexPathsForSelectedItems;
+        return indexPathsForSelectedItems != null ? Collections.unmodifiableList(indexPathsForSelectedItems) : null;
     }
 
     @Override
@@ -54,7 +55,6 @@ public abstract class SelectableAdapter extends SectionAdapter {
         indexPathsForSelectedItems.add(indexPath);
         this.onSelectViewHolder(viewHolder, indexPath);
         if (!singleSelection) return;
-        List<IndexPath> indexPathsForSelectedItems = getIndexPathsForSelectedItems();
         if (indexPathsForSelectedItems == null) return;
         for (IndexPath indexPath1 : indexPathsForSelectedItems) {
             if (!indexPath.equals(indexPath1)) {
