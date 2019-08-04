@@ -28,7 +28,7 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
         return isSelected;
     }
 
-    private void setSelected(boolean selected) {
+    void setSelected(boolean selected) {
         isSelected = selected;
         if (onItemSelectListener == null || indexPath == null) return;
         if (selected) onItemSelectListener.onSelectViewHolder(this, indexPath);
@@ -43,14 +43,14 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
         this.selectable = selectable;
     }
 
-    public void setOnItemSelectListener(OnItemSelectListener onItemSelectListener, IndexPath indexPath) {
+    void setOnItemSelectListener(OnItemSelectListener onItemSelectListener, IndexPath indexPath) {
         this.onItemSelectListener = onItemSelectListener;
         this.indexPath = indexPath;
         if (onItemSelectListener == null || indexPath == null) return;
         this.itemView.setOnTouchListener(this);
     }
 
-    public void setOnItemHighlightListener(OnItemHighlightListener onItemHighlightListener, IndexPath indexPath) {
+    void setOnItemHighlightListener(OnItemHighlightListener onItemHighlightListener, IndexPath indexPath) {
         this.onItemHighlightListener = onItemHighlightListener;
         this.indexPath = indexPath;
         if (onItemHighlightListener == null || indexPath == null) return;
