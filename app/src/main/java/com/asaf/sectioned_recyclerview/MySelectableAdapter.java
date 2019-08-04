@@ -1,7 +1,6 @@
 package com.asaf.sectioned_recyclerview;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +41,7 @@ public class MySelectableAdapter extends SelectableAdapter {
     @Override
     protected RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup viewGroup, IndexPath indexPath) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_holder_item, viewGroup, false);
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(view, context);
     }
 
     @Override
@@ -72,13 +71,11 @@ public class MySelectableAdapter extends SelectableAdapter {
 
     @Override
     protected void onSelectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
-        viewHolder.itemView.setBackgroundColor(Color.parseColor("#ff0000"));
         Log.d(TAG, "selectViewHolder: " + getIndexPathsForSelectedItems());
     }
 
     @Override
     protected void onDeselectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
-        viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
         Log.d(TAG, "deselectViewHolder: " + getIndexPathsForSelectedItems());
     }
 

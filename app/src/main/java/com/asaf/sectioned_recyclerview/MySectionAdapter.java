@@ -31,7 +31,7 @@ public class MySectionAdapter extends SectionAdapter implements OnItemHighlightL
     @Override
     protected RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup viewGroup, IndexPath indexPath) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_holder_item, viewGroup, false);
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(view, context);
     }
 
     @Override
