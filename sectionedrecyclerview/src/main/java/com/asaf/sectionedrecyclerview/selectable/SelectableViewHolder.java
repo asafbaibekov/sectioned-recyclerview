@@ -33,7 +33,7 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
         return isSelected;
     }
 
-    void setSelected(boolean selected) {
+    protected void setSelected(boolean selected) {
         isSelected = selected;
         if (indexPath == null) return;
         if (selectableAdapter != null) {
