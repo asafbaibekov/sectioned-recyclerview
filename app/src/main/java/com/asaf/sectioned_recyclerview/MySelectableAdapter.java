@@ -13,6 +13,7 @@ import com.asaf.sectioned_recyclerview.view_holders.ItemViewHolder;
 import com.asaf.sectionedrecyclerview.IndexPath;
 import com.asaf.sectionedrecyclerview.selectable.SelectableAdapter;
 import com.asaf.sectionedrecyclerview.selectable.SelectableViewHolder;
+import com.asaf.sectionedrecyclerview.selectable.SelectionMode;
 
 public class MySelectableAdapter extends SelectableAdapter {
 
@@ -20,6 +21,7 @@ public class MySelectableAdapter extends SelectableAdapter {
 
     MySelectableAdapter(Context context) {
         super(context);
+        setSelectionMode(SelectionMode.SINGLE);
     }
 
     @Override
@@ -82,10 +84,12 @@ public class MySelectableAdapter extends SelectableAdapter {
     @Override
     protected void onHighlightViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
         viewHolder.itemView.animate().setDuration(50).scaleX(0.975f).scaleY(0.9f);
+        Log.d(TAG, "onHighlightViewHolder: " + indexPath);
     }
 
     @Override
     protected void onUnhighlightViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
         viewHolder.itemView.animate().setDuration(50).scaleX(1).scaleY(1);
+        Log.d(TAG, "onUnhighlightViewHolder: " + indexPath);
     }
 }

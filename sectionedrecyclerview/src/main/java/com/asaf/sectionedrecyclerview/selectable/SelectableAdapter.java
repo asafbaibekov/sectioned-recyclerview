@@ -1,6 +1,7 @@
 package com.asaf.sectionedrecyclerview.selectable;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
@@ -12,6 +13,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class SelectableAdapter extends SectionAdapter {
+
+    private static final String SELECT_PAYLOAD = "select_payload";
+    private static final String DESELECT_PAYLOAD = "deselect_payload";
 
     @Nullable
     private CopyOnWriteArrayList<IndexPath> indexPathsForSelectedItems;
@@ -41,8 +45,26 @@ public abstract class SelectableAdapter extends SectionAdapter {
         if (!(holder instanceof SelectableViewHolder)) return;
         SelectableViewHolder selectableViewHolder = (SelectableViewHolder) holder;
         selectableViewHolder.setSelectableAdapter(this, indexPath);
-        if (getIndexPathsForSelectedItems() != null)
-            selectableViewHolder.setSelected(getIndexPathsForSelectedItems().contains(indexPath));
+    }
+
+    @Override
+    protected void onBindItemViewHolder(@NonNull RecyclerView.ViewHolder holder, IndexPath indexPath, @NonNull List payloads) {
+        super.onBindItemViewHolder(holder, indexPath, payloads);
+        if (payloads.isEmpty()) return;
+        if (!(holder instanceof SelectableViewHolder)) return;
+        SelectableViewHolder selectableViewHolder = (SelectableViewHolder) holder;
+        if (payloads.get(0) instanceof String) {
+            String payload = (String) payloads.get(0);
+            if (payload.equals(SELECT_PAYLOAD)) {
+                if (!selectableViewHolder.isSelected()) {
+                    selectableViewHolder.setSelected(true);
+                } else {
+                    this.onSelectViewHolder(selectableViewHolder, indexPath);
+                }
+            } else if (payload.equals(DESELECT_PAYLOAD)) {
+                selectableViewHolder.setSelected(false);
+            }
+        }
     }
 
     protected abstract void onSelectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath);
@@ -53,14 +75,12 @@ public abstract class SelectableAdapter extends SectionAdapter {
     void selectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {
         if (indexPathsForSelectedItems == null) indexPathsForSelectedItems = new CopyOnWriteArrayList<>();
         indexPathsForSelectedItems.add(indexPath);
-        this.onSelectViewHolder(viewHolder, indexPath);
-        if (indexPathsForSelectedItems == null) return;
         switch (selectionMode) {
             case SINGLE:
                 for (IndexPath indexPath1 : indexPathsForSelectedItems) {
                     if (!indexPath.equals(indexPath1)) {
                         indexPathsForSelectedItems.remove(indexPath1);
-                        notifyItemChanged(indexPath1);
+                        notifyItemChanged(indexPath1, DESELECT_PAYLOAD);
                     }
                 }
                 break;
@@ -68,11 +88,12 @@ public abstract class SelectableAdapter extends SectionAdapter {
                 for (IndexPath indexPath1 : indexPathsForSelectedItems) {
                     if (indexPath.isSectionEqual(indexPath1) && !indexPath.isRowEqual(indexPath1)) {
                         indexPathsForSelectedItems.remove(indexPath1);
-                        notifyItemChanged(indexPath1);
+                        notifyItemChanged(indexPath1, DESELECT_PAYLOAD);
                     }
                 }
                 break;
         }
+        notifyItemChanged(indexPath, SELECT_PAYLOAD);
     }
 
     void deselectViewHolder(SelectableViewHolder viewHolder, IndexPath indexPath) {

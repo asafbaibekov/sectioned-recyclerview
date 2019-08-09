@@ -2,10 +2,13 @@ package com.asaf.sectionedrecyclerview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 public abstract class SectionAdapter extends RecyclerView.Adapter {
 
@@ -32,6 +35,16 @@ public abstract class SectionAdapter extends RecyclerView.Adapter {
             case IndexPath.SECTION_ITEM_TYPE: onBindSectionViewHolder(viewHolder, getSectionIndexFromPosition(i)); break;
             case IndexPath.ROW_ITEM_TYPE: onBindItemViewHolder(viewHolder, getIndexPathFromPosition(i)); break;
             case IndexPath.FOOTER_ITEM_TYPE: onBindFooterViewHolder(viewHolder, getFooterIndexFromPosition(i)); break;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i, @NonNull List payloads) {
+        if (payloads.isEmpty()) { super.onBindViewHolder(viewHolder, i, payloads); return; }
+        switch (getItemTypeFromPosition(i)) {
+            case IndexPath.SECTION_ITEM_TYPE: onBindSectionViewHolder(viewHolder, getSectionIndexFromPosition(i), payloads); break;
+            case IndexPath.ROW_ITEM_TYPE: onBindItemViewHolder(viewHolder, getIndexPathFromPosition(i), payloads); break;
+            case IndexPath.FOOTER_ITEM_TYPE: onBindFooterViewHolder(viewHolder, getFooterIndexFromPosition(i), payloads); break;
         }
     }
 
@@ -112,6 +125,10 @@ public abstract class SectionAdapter extends RecyclerView.Adapter {
         notifyItemChanged(getPositionFromIndexPath(indexPath));
     }
 
+    public void notifyItemChanged(IndexPath indexPath, @Nullable Object payload) {
+        notifyItemChanged(getPositionFromIndexPath(indexPath), payload);
+    }
+
     private int getPositionFromIndexPath(IndexPath indexPath) {
         int counter = 0;
         if (indexPath.getSection() >= numbersOfSections()) throw new IndexOutOfBoundsException();
@@ -144,4 +161,8 @@ public abstract class SectionAdapter extends RecyclerView.Adapter {
     protected void onBindSectionViewHolder(RecyclerView.ViewHolder holder, int section) {}
     protected abstract void onBindItemViewHolder(RecyclerView.ViewHolder holder, IndexPath indexPath);
     protected void onBindFooterViewHolder(RecyclerView.ViewHolder holder, int footer) {}
+
+    protected void onBindSectionViewHolder(@NonNull RecyclerView.ViewHolder holder, int section, @NonNull List payloads) {}
+    protected void onBindItemViewHolder(@NonNull RecyclerView.ViewHolder holder, IndexPath indexPath, @NonNull List payloads) {}
+    protected void onBindFooterViewHolder(@NonNull RecyclerView.ViewHolder holder, int footer, @NonNull List payloads) {}
 }

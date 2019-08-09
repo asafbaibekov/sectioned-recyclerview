@@ -34,15 +34,16 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     protected void setSelected(boolean selected) {
-        isSelected = selected;
         if (indexPath == null) return;
         if (selectableAdapter != null) {
             if (selected) selectableAdapter.selectViewHolder(this, indexPath);
             else selectableAdapter.deselectViewHolder(this, indexPath);
         }
-        if (onItemSelectListener == null) return;
-        if (selected) onItemSelectListener.onSelectViewHolder(this, indexPath);
-        else onItemSelectListener.onDeselectViewHolder(this, indexPath);
+        if (onItemSelectListener != null) {
+            if (selected) onItemSelectListener.onSelectViewHolder(this, indexPath);
+            else onItemSelectListener.onDeselectViewHolder(this, indexPath);
+        }
+        isSelected = selected;
     }
 
     public boolean isSelectable() {
